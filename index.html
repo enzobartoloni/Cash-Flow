@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="fr" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>SimulRenta - Rentabilité & Cash-Flow Locatif</title>
+  
+  <!-- PWA & Mobile Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="SimulRenta">
+  <meta name="theme-color" content="#4f46e5">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            ios: {
+              bg: '#f2f2f7',
+              card: '#ffffff',
+              darkBg: '#000000',
+              darkCard: '#1c1c1e',
+              primary: '#4f46e5',
+              secondary: '#10b981',
+              danger: '#ef4444'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    input {
+      user-select: text;
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .dark .glass-card {
+      background: rgba(28, 28, 30, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+  </style>
+</head>
+<body class="bg-ios-bg dark:bg-ios-darkBg text-slate-900 dark:text-slate-100 antialiased min-h-full transition-colors duration-300 pb-12">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-40 glass-card border-b border-slate-200/50 dark:border-slate-800/50 pt-10 pb-4 px-4 shadow-sm">
+    <div class="max-w-xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 to-emerald-500 flex items-center justify-center text-white shadow-md shadow-indigo-500/20">
+          <i class="fa-solid fa-chart-line text-lg"></i>
+        </div>
+        <div>
+          <h1 class="font-bold text-lg leading-tight">SimulRenta</h1>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Cash-Flow & Rentabilité</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="shareBtn" class="w-9 h-9 rounded-full bg-slate-200/60 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 active:scale-95 transition">
+          <i class="fa-solid fa-share-nodes text-sm"></i>
+        </button>
+        <button id="darkToggle" class="w-9 h-9 rounded-full bg-slate-200/60 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 active:scale-95 transition">
+          <i class="fa-solid fa-moon text-sm"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-xl mx-auto px-4 pt-4 space-y-5">
+
+    <!-- Banner iOS -->
+    <div id="pwaBanner" class="bg-indigo-600 text-white rounded-3xl p-4 shadow-lg shadow-indigo-500/20 relative overflow-hidden">
+      <button onclick="document.getElementById('pwaBanner').remove()" class="absolute top-3 right-3 text-white/70 hover:text-white">
+        <i class="fa-solid fa-xmark text-sm"></i>
+      </button>
+      <div class="flex items-start gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center text-xl shrink-0">
+          📱
+        </div>
+        <div class="text-xs">
+          <p class="font-bold text-sm mb-0.5">Installer sur l'écran d'accueil</p>
+          <p class="text-indigo-100">Sur Safari iPhone : appuie sur <i class="fa-solid fa-arrow-up-from-bracket"></i> puis <strong>« Sur l'écran d'accueil »</strong>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Results Card -->
+    <div class="bg-ios-card dark:bg-ios-darkCard rounded-3xl p-5 shadow-sm border border-slate-200/60 dark:border-slate-800/60 space-y-4">
+      <div class="text-center pb-2 border-b border-slate-100 dark:border-slate-800">
+        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Cash-Flow Mensuel Net</span>
+        <div id="cashFlowDisplay" class="text-4xl font-black mt-1 text-emerald-500">+ 0 € / mois</div>
+        <p id="cashFlowSubtitle" class="text-xs text-slate-500 mt-1">Loyer perçu − (Crédit + Charges + Impôts)</p>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3 pt-1">
+        <div class="bg-slate-50 dark:bg-slate-900/50 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 text-center">
+          <span class="text-[10px] font-semibold uppercase text-slate-400 block mb-1">Renta. Brute</span>
+          <span id="rentaBruteDisplay" class="text-xl font-bold text-indigo-600 dark:text-indigo-400">0.0 %</span>
+        </div>
+        <div class="bg-slate-50 dark:bg-slate-900/50 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 text-center">
+          <span class="text-[10px] font-semibold uppercase text-slate-400 block mb-1">Renta. Nette</span>
+          <span id="rentaNetteDisplay" class="text-xl font-bold text-emerald-600 dark:text-emerald-400">0.0 %</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inputs Section -->
+    <div class="bg-ios-card dark:bg-ios-darkCard rounded-3xl p-5 shadow-sm border border-slate-200/60 dark:border-slate-800/60 space-y-4">
+      <h2 class="font-bold text-sm text-slate-500 uppercase tracking-wider">Paramètres du Projet</h2>
+
+      <!-- Prix d'achat -->
+      <div>
+        <div class="flex justify-between text-xs font-medium mb-1.5">
+          <span>Prix d'achat du bien</span>
+          <span class="font-bold text-indigo-600 dark:text-indigo-400"><input type="number" id="priceInput" value="150000" class="w-24 text-right bg-transparent border-b border-indigo-300 dark:border-indigo-700 font-bold focus:outline-none"> €</span>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="adjust('priceInput', -5000)" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 font-bold text-slate-600 dark:text-slate-300 active:scale-95 text-lg">-</button>
+          <input type="range" id="priceSlider" min="20000" max="500000" step="5000" value="150000" class="w-full accent-indigo-600">
+          <button onclick="adjust('priceInput', 5000)" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 font-bold text-slate-600 dark:text-slate-300 active:scale-95 text-lg">+</button>
+        </div>
+      </div>
+
+      <!-- Loyer Mensuel -->
+      <div>
+        <div class="flex justify-between text-xs font-medium mb-1.5">
+          <span>Loyer mensuel estimé</span>
+          <span class="font-bold text-indigo-600 dark:text-indigo-400"><input type="number" id="rentInput" value="700" class="w-20 text-right bg-transparent border-b border-indigo-300 dark:border-indigo-700 font-bold focus:outline-none"> €</span>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="adjust('rentInput', -50)" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 font-bold text-slate-600 dark:text-slate-300 active:scale-95 text-lg">-</button>
+          <input type="range" id="rentSlider" min="200" max="3000" step="25" value="700" class="w-full accent-indigo-600">
+          <button onclick="adjust('rentInput', 50)" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 font-bold text-slate-600 dark:text-slate-300 active:scale-95 text-lg">+</button>
+        </div>
+      </div>
+
+      <!-- Mensualité Crédit -->
+      <div>
+        <div class="flex justify-between text-xs font-medium mb-1.5">
+          <span>Mensualité de crédit (assurance incluse)</span>
+          <span class="font-bold text-indigo-600 dark:text-indigo-400"><input type="number" id="loanInput" value="650" class="w-20 text-right bg-transparent border-b border-indigo-300 dark:border-indigo-700 font-bold focus:outline-none"> €</span>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="adjust('loanInput', -25)" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 font-bold text-slate-600 dark:text-slate-300 active:scale-95 text-lg">-</button>
+          <input type="range" id="loanSlider" min="0" max="2500" step="25" value="650" class="w-full accent-indigo-600">
+          <button onclick="adjust('loanInput', 25)" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 font-bold text-slate-600 dark:text-slate-300 active:scale-95 text-lg">+</button>
+        </div>
+      </div>
+
+      <!-- Charges & Taxe Foncière -->
+      <div class="grid grid-cols-2 gap-3 pt-2">
+        <div>
+          <label class="text-xs text-slate-500 block mb-1">Charges / mois (€)</label>
+          <input type="number" id="chargesInput" value="60" class="w-full p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 font-semibold focus:outline-none text-sm">
+        </div>
+        <div>
+          <label class="text-xs text-slate-500 block mb-1">Taxe Foncière (€/an)</label>
+          <input type="number" id="taxInput" value="700" class="w-full p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 font-semibold focus:outline-none text-sm">
+        </div>
+      </div>
+
+      <!-- Régime Fiscal -->
+      <div class="pt-2">
+        <label class="text-xs text-slate-500 block mb-1">Régime Fiscal</label>
+        <select id="fiscalSelect" class="w-full p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 font-semibold focus:outline-none text-sm">
+          <option value="lmnp_real">LMNP Réel (Amortissement - 0€ d'impôt estimé)</option>
+          <option value="lmnp_micro">LMNP Micro-BIC (Abattement 50%)</option>
+          <option value="bareme">Nu / Barème Propre (TMI 30% + 17.2%)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="bg-ios-card dark:bg-ios-darkCard rounded-3xl p-5 shadow-sm border border-slate-200/60 dark:border-slate-800/60">
+      <h3 class="font-bold text-sm text-slate-500 uppercase tracking-wider mb-4">Répartition Mensuelle</h3>
+      <div class="h-48 relative">
+        <canvas id="chart"></canvas>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // Theme toggle
+    const darkToggle = document.getElementById('darkToggle');
+    darkToggle.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      update();
+    });
+
+    // Share button
+    document.getElementById('shareBtn').addEventListener('click', () => {
+      if (navigator.share) {
+        navigator.share({ title: 'SimulRenta', url: window.location.href });
+      } else {
+        navigator.clipboard.writeText(window.location.href);
+        alert('Lien copié dans le presse-papier !');
+      }
+    });
+
+    // Adjust helper
+    function adjust(inputId, delta) {
+      const el = document.getElementById(inputId);
+      el.value = Math.max(0, parseInt(el.value || 0) + delta);
+      syncAndCalc();
+    }
+
+    // Elements
+    const priceInput = document.getElementById('priceInput');
+    const priceSlider = document.getElementById('priceSlider');
+    const rentInput = document.getElementById('rentInput');
+    const rentSlider = document.getElementById('rentSlider');
+    const loanInput = document.getElementById('loanInput');
+    const loanSlider = document.getElementById('loanSlider');
+    const chargesInput = document.getElementById('chargesInput');
+    const taxInput = document.getElementById('taxInput');
+    const fiscalSelect = document.getElementById('fiscalSelect');
+
+    function syncAndCalc() {
+      priceSlider.value = priceInput.value;
+      rentSlider.value = rentInput.value;
+      loanSlider.value = loanInput.value;
+      update();
+    }
+
+    [priceInput, rentInput, loanInput, chargesInput, taxInput, fiscalSelect].forEach(e => e.addEventListener('input', syncAndCalc));
+    
+    priceSlider.addEventListener('input', e => { priceInput.value = e.target.value; update(); });
+    rentSlider.addEventListener('input', e => { rentInput.value = e.target.value; update(); });
+    loanSlider.addEventListener('input', e => { loanInput.value = e.target.value; update(); });
+
+    // Chart init
+    const ctx = document.getElementById('chart').getContext('2d');
+    let myChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Crédit', 'Charges & Taxe', 'Impôts Est.', 'Cash-Flow Net'],
+        datasets: [{
+          data: [650, 118, 0, 0],
+          backgroundColor: ['#6366f1', '#f59e0b', '#ef4444', '#10b981'],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } }
+        },
+        cutout: '70%'
+      }
+    });
+
+    function update() {
+      const price = parseFloat(priceInput.value) || 0;
+      const rent = parseFloat(rentInput.value) || 0;
+      const loan = parseFloat(loanInput.value) || 0;
+      const charges = parseFloat(chargesInput.value) || 0;
+      const taxMonthly = (parseFloat(taxInput.value) || 0) / 12;
+      const regime = fiscalSelect.value;
+
+      // Fiscalité
+      let impotMonthly = 0;
+      const annualRent = rent * 12;
+      if (regime === 'lmnp_micro') {
+        impotMonthly = (annualRent * 0.5 * 0.472) / 12; // TMI 30% + 17.2%
+      } else if (regime === 'bareme') {
+        impotMonthly = (annualRent * 0.7 * 0.472) / 12;
+      } // lmnp_real = 0€ (amortissement)
+
+      const totalOut = loan + charges + taxMonthly + impotMonthly;
+      const cashFlow = rent - totalOut;
+
+      // Renta
+      const notaire = price * 0.08;
+      const totalInvest = price + notaire;
+      const rentaBrute = totalInvest > 0 ? ((rent * 12) / totalInvest) * 100 : 0;
+      const rentaNette = totalInvest > 0 ? (((rent - charges - taxMonthly) * 12) / totalInvest) * 100 : 0;
+
+      // Display
+      const cfEl = document.getElementById('cashFlowDisplay');
+      cfEl.textContent = (cashFlow >= 0 ? '+ ' : '') + Math.round(cashFlow) + ' € / mois';
+      cfEl.className = 'text-4xl font-black mt-1 ' + (cashFlow >= 0 ? 'text-emerald-500' : 'text-rose-500');
+
+      document.getElementById('rentaBruteDisplay').textContent = rentaBrute.toFixed(1) + ' %';
+      document.getElementById('rentaNetteDisplay').textContent = rentaNette.toFixed(1) + ' %';
+
+      // Chart
+      myChart.data.datasets[0].data = [
+        Math.round(loan),
+        Math.round(charges + taxMonthly),
+        Math.round(impotMonthly),
+        Math.max(0, Math.round(cashFlow))
+      ];
+      myChart.update();
+    }
+
+    update();
+  </script>
+</body>
+</html>
