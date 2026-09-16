@@ -41,7 +41,7 @@
       -webkit-tap-highlight-color: transparent;
       user-select: none;
     }
-    input {
+    input, select {
       user-select: text;
     }
     .glass-card {
@@ -67,7 +67,7 @@
         </div>
         <div>
           <h1 class="font-bold text-lg leading-tight">SimulRenta</h1>
-          <p class="text-xs text-slate-500 dark:text-slate-400">Cash-Flow & Rentabilité</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Cash-Flow & Rentabilité avec Fiscalité</p>
         </div>
       </div>
       <div class="flex items-center gap-2">
@@ -102,19 +102,23 @@
     <!-- Main Results Card -->
     <div class="bg-ios-card dark:bg-ios-darkCard rounded-3xl p-5 shadow-sm border border-slate-200/60 dark:border-slate-800/60 space-y-4">
       <div class="text-center pb-2 border-b border-slate-100 dark:border-slate-800">
-        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Cash-Flow Mensuel Net</span>
+        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Cash-Flow Mensuel Net Net</span>
         <div id="cashFlowDisplay" class="text-4xl font-black mt-1 text-emerald-500">+ 0 € / mois</div>
         <p id="cashFlowSubtitle" class="text-xs text-slate-500 mt-1">Loyer perçu − (Crédit + Charges + Impôts)</p>
       </div>
 
-      <div class="grid grid-cols-2 gap-3 pt-1">
-        <div class="bg-slate-50 dark:bg-slate-900/50 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 text-center">
+      <div class="grid grid-cols-3 gap-2 pt-1 text-center">
+        <div class="bg-slate-50 dark:bg-slate-900/50 p-2.5 rounded-2xl border border-slate-100 dark:border-slate-800">
           <span class="text-[10px] font-semibold uppercase text-slate-400 block mb-1">Renta. Brute</span>
-          <span id="rentaBruteDisplay" class="text-xl font-bold text-indigo-600 dark:text-indigo-400">0.0 %</span>
+          <span id="rentaBruteDisplay" class="text-base font-bold text-indigo-600 dark:text-indigo-400">0.0 %</span>
         </div>
-        <div class="bg-slate-50 dark:bg-slate-900/50 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 text-center">
+        <div class="bg-slate-50 dark:bg-slate-900/50 p-2.5 rounded-2xl border border-slate-100 dark:border-slate-800">
           <span class="text-[10px] font-semibold uppercase text-slate-400 block mb-1">Renta. Nette</span>
-          <span id="rentaNetteDisplay" class="text-xl font-bold text-emerald-600 dark:text-emerald-400">0.0 %</span>
+          <span id="rentaNetteDisplay" class="text-base font-bold text-emerald-600 dark:text-emerald-400">0.0 %</span>
+        </div>
+        <div class="bg-slate-50 dark:bg-slate-900/50 p-2.5 rounded-2xl border border-slate-100 dark:border-slate-800">
+          <span class="text-[10px] font-semibold uppercase text-slate-400 block mb-1">Impôt / mois</span>
+          <span id="impotDisplay" class="text-base font-bold text-rose-500">0 €</span>
         </div>
       </div>
     </div>
@@ -136,15 +140,28 @@
         </div>
       </div>
 
+      <!-- Travaux -->
+      <div>
+        <div class="flex justify-between text-xs font-medium mb-1.5">
+          <span>Montant des travaux</span>
+          <span class="font-bold text-indigo-600 dark:text-indigo-400"><input type="number" id="worksInput" value="15000" class="w-24 text-right bg-transparent border-b border-indigo-300 dark:border-indigo-700 font-bold focus:outline-none"> €</span>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="adjust('worksInput', -2500)" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 font-bold text-slate-600 dark:text-slate-300 active:scale-95 text-lg">-</button>
+          <input type="range" id="worksSlider" min="0" max="100000" step="2500" value="15000" class="w-full accent-indigo-600">
+          <button onclick="adjust('worksInput', 2500)" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 font-bold text-slate-600 dark:text-slate-300 active:scale-95 text-lg">+</button>
+        </div>
+      </div>
+
       <!-- Loyer Mensuel -->
       <div>
         <div class="flex justify-between text-xs font-medium mb-1.5">
           <span>Loyer mensuel estimé</span>
-          <span class="font-bold text-indigo-600 dark:text-indigo-400"><input type="number" id="rentInput" value="700" class="w-20 text-right bg-transparent border-b border-indigo-300 dark:border-indigo-700 font-bold focus:outline-none"> €</span>
+          <span class="font-bold text-indigo-600 dark:text-indigo-400"><input type="number" id="rentInput" value="750" class="w-20 text-right bg-transparent border-b border-indigo-300 dark:border-indigo-700 font-bold focus:outline-none"> €</span>
         </div>
         <div class="flex gap-2">
           <button onclick="adjust('rentInput', -50)" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 font-bold text-slate-600 dark:text-slate-300 active:scale-95 text-lg">-</button>
-          <input type="range" id="rentSlider" min="200" max="3000" step="25" value="700" class="w-full accent-indigo-600">
+          <input type="range" id="rentSlider" min="200" max="3000" step="25" value="750" class="w-full accent-indigo-600">
           <button onclick="adjust('rentInput', 50)" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 font-bold text-slate-600 dark:text-slate-300 active:scale-95 text-lg">+</button>
         </div>
       </div>
@@ -174,14 +191,24 @@
         </div>
       </div>
 
-      <!-- Régime Fiscal -->
-      <div class="pt-2">
-        <label class="text-xs text-slate-500 block mb-1">Régime Fiscal</label>
-        <select id="fiscalSelect" class="w-full p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 font-semibold focus:outline-none text-sm">
-          <option value="lmnp_real">LMNP Réel (Amortissement - 0€ d'impôt estimé)</option>
-          <option value="lmnp_micro">LMNP Micro-BIC (Abattement 50%)</option>
-          <option value="bareme">Nu / Barème Propre (TMI 30% + 17.2%)</option>
-        </select>
+      <!-- Régime Fiscal & TMI -->
+      <div class="grid grid-cols-2 gap-3 pt-2">
+        <div>
+          <label class="text-xs text-slate-500 block mb-1">Régime Fiscal</label>
+          <select id="fiscalSelect" class="w-full p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 font-semibold focus:outline-none text-sm">
+            <option value="lmnp_real">LMNP Réel (Amortissement)</option>
+            <option value="lmnp_micro">LMNP Micro-BIC (Abattement 50%)</option>
+            <option value="bareme">Location Nue (Micro / Réel)</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-xs text-slate-500 block mb-1">Tranche d'Impôt (TMI)</label>
+          <select id="tmiSelect" class="w-full p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 font-semibold focus:outline-none text-sm">
+            <option value="0.11">11 %</option>
+            <option value="0.30" selected>30 %</option>
+            <option value="0.41">41 %</option>
+          </select>
+        </div>
       </div>
     </div>
 
@@ -223,6 +250,8 @@
     // Elements
     const priceInput = document.getElementById('priceInput');
     const priceSlider = document.getElementById('priceSlider');
+    const worksInput = document.getElementById('worksInput');
+    const worksSlider = document.getElementById('worksSlider');
     const rentInput = document.getElementById('rentInput');
     const rentSlider = document.getElementById('rentSlider');
     const loanInput = document.getElementById('loanInput');
@@ -230,17 +259,20 @@
     const chargesInput = document.getElementById('chargesInput');
     const taxInput = document.getElementById('taxInput');
     const fiscalSelect = document.getElementById('fiscalSelect');
+    const tmiSelect = document.getElementById('tmiSelect');
 
     function syncAndCalc() {
       priceSlider.value = priceInput.value;
+      worksSlider.value = worksInput.value;
       rentSlider.value = rentInput.value;
       loanSlider.value = loanInput.value;
       update();
     }
 
-    [priceInput, rentInput, loanInput, chargesInput, taxInput, fiscalSelect].forEach(e => e.addEventListener('input', syncAndCalc));
+    [priceInput, worksInput, rentInput, loanInput, chargesInput, taxInput, fiscalSelect, tmiSelect].forEach(e => e.addEventListener('input', syncAndCalc));
     
     priceSlider.addEventListener('input', e => { priceInput.value = e.target.value; update(); });
+    worksSlider.addEventListener('input', e => { worksInput.value = e.target.value; update(); });
     rentSlider.addEventListener('input', e => { rentInput.value = e.target.value; update(); });
     loanSlider.addEventListener('input', e => { loanInput.value = e.target.value; update(); });
 
@@ -268,27 +300,51 @@
 
     function update() {
       const price = parseFloat(priceInput.value) || 0;
+      const works = parseFloat(worksInput.value) || 0;
       const rent = parseFloat(rentInput.value) || 0;
       const loan = parseFloat(loanInput.value) || 0;
       const charges = parseFloat(chargesInput.value) || 0;
       const taxMonthly = (parseFloat(taxInput.value) || 0) / 12;
       const regime = fiscalSelect.value;
+      const tmi = parseFloat(tmiSelect.value) || 0.30;
+      const ps = 0.172; // Prélèvements sociaux
 
-      // Fiscalité
-      let impotMonthly = 0;
       const annualRent = rent * 12;
+      const annualCharges = (charges * 12) + (parseFloat(taxInput.value) || 0);
+
+      let impotMonthly = 0;
+
       if (regime === 'lmnp_micro') {
-        impotMonthly = (annualRent * 0.5 * 0.472) / 12; // TMI 30% + 17.2%
+        // Abattement 50%
+        const beneficeMicro = annualRent * 0.50;
+        impotMonthly = (beneficeMicro * (tmi + ps)) / 12;
       } else if (regime === 'bareme') {
-        impotMonthly = (annualRent * 0.7 * 0.472) / 12;
-      } // lmnp_real = 0€ (amortissement)
+        // Location nue (Micro-foncier abattement 30%)
+        const beneficeNue = annualRent * 0.70;
+        impotMonthly = (beneficeNue * (tmi + ps)) / 12;
+      } else if (regime === 'lmnp_real') {
+        // LMNP Réel : Amortissement du bien (85% valeur sur 30 ans) + amortissement travaux (sur 15 ans)
+        const amortissementImmo = (price * 0.85) / 30;
+        const amortissementWorks = works / 15;
+        const totalAmortissement = amortissementImmo + amortissementWorks;
+
+        // Bénéfice imposable au réel = Loyers - (Charges déductibles + Amortissements)
+        const beneficeImposable = annualRent - annualCharges - totalAmortissement;
+
+        if (beneficeImposable > 0) {
+          // Uniquement si bénéfice net positif après amortissements
+          impotMonthly = (beneficeImposable * (tmi + ps)) / 12;
+        } else {
+          impotMonthly = 0; // Déficit ou amortissement neutralisant l'impôt
+        }
+      }
 
       const totalOut = loan + charges + taxMonthly + impotMonthly;
       const cashFlow = rent - totalOut;
 
       // Renta
       const notaire = price * 0.08;
-      const totalInvest = price + notaire;
+      const totalInvest = price + notaire + works;
       const rentaBrute = totalInvest > 0 ? ((rent * 12) / totalInvest) * 100 : 0;
       const rentaNette = totalInvest > 0 ? (((rent - charges - taxMonthly) * 12) / totalInvest) * 100 : 0;
 
@@ -299,6 +355,7 @@
 
       document.getElementById('rentaBruteDisplay').textContent = rentaBrute.toFixed(1) + ' %';
       document.getElementById('rentaNetteDisplay').textContent = rentaNette.toFixed(1) + ' %';
+      document.getElementById('impotDisplay').textContent = Math.round(impotMonthly) + ' €';
 
       // Chart
       myChart.data.datasets[0].data = [
