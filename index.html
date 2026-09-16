@@ -56,7 +56,7 @@
     }
   </style>
 </head>
-<body class="bg-ios-bg dark:bg-ios-darkBg text-slate-900 dark:text-slate-100 antialiased min-h-full transition-colors duration-300 pb-12">
+<body class="bg-ios-bg dark:bg-ios-darkBg text-slate-900 dark:text-slate-100 antialiased min-h-full transition-colors duration-300 pb-16">
 
   <!-- Header -->
   <header class="sticky top-0 z-40 glass-card border-b border-slate-200/50 dark:border-slate-800/50 pt-10 pb-4 px-4 shadow-sm">
@@ -67,7 +67,7 @@
         </div>
         <div>
           <h1 class="font-bold text-lg leading-tight">SimulRenta</h1>
-          <p class="text-xs text-slate-500 dark:text-slate-400">Cash-Flow & Rentabilité avec Fiscalité</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Simulateur d'Investissement Locatif</p>
         </div>
       </div>
       <div class="flex items-center gap-2">
@@ -81,7 +81,7 @@
     </div>
   </header>
 
-  <main class="max-w-xl mx-auto px-4 pt-4 space-y-5">
+  <main class="max-w-xl mx-auto px-4 pt-4 space-y-6">
 
     <!-- Banner iOS -->
     <div id="pwaBanner" class="bg-indigo-600 text-white rounded-3xl p-4 shadow-lg shadow-indigo-500/20 relative overflow-hidden">
@@ -102,9 +102,9 @@
     <!-- Main Results Card -->
     <div class="bg-ios-card dark:bg-ios-darkCard rounded-3xl p-5 shadow-sm border border-slate-200/60 dark:border-slate-800/60 space-y-4">
       <div class="text-center pb-2 border-b border-slate-100 dark:border-slate-800">
-        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Cash-Flow Mensuel Net Net</span>
+        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Cash-Flow Mensuel Net-Net</span>
         <div id="cashFlowDisplay" class="text-4xl font-black mt-1 text-emerald-500">+ 0 € / mois</div>
-        <p id="cashFlowSubtitle" class="text-xs text-slate-500 mt-1">Loyer perçu − (Crédit + Charges + Impôts)</p>
+        <p id="cashFlowSubtitle" class="text-xs text-slate-500 mt-1">Argent réel qui reste dans ta poche chaque mois</p>
       </div>
 
       <div class="grid grid-cols-3 gap-2 pt-1 text-center">
@@ -117,7 +117,7 @@
           <span id="rentaNetteDisplay" class="text-base font-bold text-emerald-600 dark:text-emerald-400">0.0 %</span>
         </div>
         <div class="bg-slate-50 dark:bg-slate-900/50 p-2.5 rounded-2xl border border-slate-100 dark:border-slate-800">
-          <span class="text-[10px] font-semibold uppercase text-slate-400 block mb-1">Impôt / mois</span>
+          <span class="text-[10px] font-semibold uppercase text-slate-400 block mb-1">Impôt Est. / mois</span>
           <span id="impotDisplay" class="text-base font-bold text-rose-500">0 €</span>
         </div>
       </div>
@@ -157,11 +157,11 @@
       <div>
         <div class="flex justify-between text-xs font-medium mb-1.5">
           <span>Loyer mensuel estimé</span>
-          <span class="font-bold text-indigo-600 dark:text-indigo-400"><input type="number" id="rentInput" value="750" class="w-20 text-right bg-transparent border-b border-indigo-300 dark:border-indigo-700 font-bold focus:outline-none"> €</span>
+          <span class="font-bold text-indigo-600 dark:text-indigo-400"><input type="number" id="rentInput" value="850" class="w-20 text-right bg-transparent border-b border-indigo-300 dark:border-indigo-700 font-bold focus:outline-none"> €</span>
         </div>
         <div class="flex gap-2">
           <button onclick="adjust('rentInput', -50)" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 font-bold text-slate-600 dark:text-slate-300 active:scale-95 text-lg">-</button>
-          <input type="range" id="rentSlider" min="200" max="3000" step="25" value="750" class="w-full accent-indigo-600">
+          <input type="range" id="rentSlider" min="200" max="3000" step="25" value="850" class="w-full accent-indigo-600">
           <button onclick="adjust('rentInput', 50)" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 font-bold text-slate-600 dark:text-slate-300 active:scale-95 text-lg">+</button>
         </div>
       </div>
@@ -169,12 +169,12 @@
       <!-- Mensualité Crédit -->
       <div>
         <div class="flex justify-between text-xs font-medium mb-1.5">
-          <span>Mensualité de crédit (assurance incluse)</span>
-          <span class="font-bold text-indigo-600 dark:text-indigo-400"><input type="number" id="loanInput" value="650" class="w-20 text-right bg-transparent border-b border-indigo-300 dark:border-indigo-700 font-bold focus:outline-none"> €</span>
+          <span>Mensualité du crédit (assurance incluse)</span>
+          <span class="font-bold text-indigo-600 dark:text-indigo-400"><input type="number" id="loanInput" value="600" class="w-20 text-right bg-transparent border-b border-indigo-300 dark:border-indigo-700 font-bold focus:outline-none"> €</span>
         </div>
         <div class="flex gap-2">
           <button onclick="adjust('loanInput', -25)" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 font-bold text-slate-600 dark:text-slate-300 active:scale-95 text-lg">-</button>
-          <input type="range" id="loanSlider" min="0" max="2500" step="25" value="650" class="w-full accent-indigo-600">
+          <input type="range" id="loanSlider" min="0" max="2500" step="25" value="600" class="w-full accent-indigo-600">
           <button onclick="adjust('loanInput', 25)" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 font-bold text-slate-600 dark:text-slate-300 active:scale-95 text-lg">+</button>
         </div>
       </div>
@@ -182,7 +182,7 @@
       <!-- Charges & Taxe Foncière -->
       <div class="grid grid-cols-2 gap-3 pt-2">
         <div>
-          <label class="text-xs text-slate-500 block mb-1">Charges / mois (€)</label>
+          <label class="text-xs text-slate-500 block mb-1">Charges copro / mois (€)</label>
           <input type="number" id="chargesInput" value="60" class="w-full p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 font-semibold focus:outline-none text-sm">
         </div>
         <div>
@@ -196,17 +196,19 @@
         <div>
           <label class="text-xs text-slate-500 block mb-1">Régime Fiscal</label>
           <select id="fiscalSelect" class="w-full p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 font-semibold focus:outline-none text-sm">
-            <option value="lmnp_real">LMNP Réel (Amortissement)</option>
-            <option value="lmnp_micro">LMNP Micro-BIC (Abattement 50%)</option>
-            <option value="bareme">Location Nue (Micro / Réel)</option>
+            <option value="lmnp_real" selected>LMNP Réel (Optimisé)</option>
+            <option value="lmnp_micro">LMNP Micro-BIC (Standard)</option>
+            <option value="bareme">Location Nue (Micro-Foncier)</option>
           </select>
         </div>
         <div>
           <label class="text-xs text-slate-500 block mb-1">Tranche d'Impôt (TMI)</label>
           <select id="tmiSelect" class="w-full p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 font-semibold focus:outline-none text-sm">
+            <option value="0.00">0 % (Non Imposable)</option>
             <option value="0.11">11 %</option>
             <option value="0.30" selected>30 %</option>
             <option value="0.41">41 %</option>
+            <option value="0.45">45 %</option>
           </select>
         </div>
       </div>
@@ -214,9 +216,84 @@
 
     <!-- Chart -->
     <div class="bg-ios-card dark:bg-ios-darkCard rounded-3xl p-5 shadow-sm border border-slate-200/60 dark:border-slate-800/60">
-      <h3 class="font-bold text-sm text-slate-500 uppercase tracking-wider mb-4">Répartition Mensuelle</h3>
+      <h3 class="font-bold text-sm text-slate-500 uppercase tracking-wider mb-4">Répartition des Sorties vs Gains</h3>
       <div class="h-48 relative">
         <canvas id="chart"></canvas>
+      </div>
+    </div>
+
+    <!-- SECTION EXPLICATIVE SIMPLIFIÉE SUR LA FISCALITÉ -->
+    <div class="bg-ios-card dark:bg-ios-darkCard rounded-3xl p-6 shadow-sm border border-slate-200/60 dark:border-slate-800/60 space-y-5">
+      <div class="flex items-center gap-3 border-b border-slate-100 dark:border-slate-800 pb-3">
+        <div class="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center font-bold text-lg">
+          💡
+        </div>
+        <div>
+          <h3 class="font-bold text-base leading-tight">Comprendre la Fiscalité Facilement</h3>
+          <p class="text-xs text-slate-400">Pourquoi ne paie-t-on pas d'impôts sur les loyers au début ?</p>
+        </div>
+      </div>
+
+      <!-- Concept 1 : Cash-flow vs Bénéfice -->
+      <div class="space-y-1.5">
+        <h4 class="font-bold text-sm text-indigo-600 dark:text-indigo-400 flex items-center gap-2">
+          <i class="fa-solid fa-wallet text-xs"></i> 1. Cash-Flow ≠ Bénéfice Imposable
+        </h4>
+        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+          Le <strong>Cash-Flow</strong>, c'est l'argent réel qui reste sur ton compte à la fin du mois ($Loyer - Crédit - Charges$).<br>
+          Les <strong>Impôts</strong> ne calculent pas ta taxe sur cet argent, mais sur un <em>bénéfice comptable</em> théorique.
+        </p>
+      </div>
+
+      <!-- Concept 2 : Les Régimes Fiscaux -->
+      <div class="space-y-3 pt-1">
+        <h4 class="font-bold text-sm text-indigo-600 dark:text-indigo-400 flex items-center gap-2">
+          <i class="fa-solid fa-building-columns text-xs"></i> 2. Quel régime choisir ?
+        </h4>
+
+        <!-- Card LMNP Réel -->
+        <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800 space-y-1">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-xs text-emerald-600 dark:text-emerald-400 uppercase tracking-wide">LMNP Réel (Meublé) — Le plus avantageux</span>
+            <span class="text-[10px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full font-bold">0 € d'impôt</span>
+          </div>
+          <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+            Grâce à la règle de l'<strong>Amortissement</strong>, la loi te permet de déduire la perte de valeur théorique du logement et des travaux chaque année. Dans 90% des cas, cela efface le bénéfice taxable : <strong>tu encaisses tes loyers sans payer d'impôt pendant 10 à 15 ans.</strong>
+          </p>
+        </div>
+
+        <!-- Card LMNP Micro-BIC -->
+        <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800 space-y-1">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-xs text-amber-600 dark:text-amber-400 uppercase tracking-wide">LMNP Micro-BIC (Meublé)</span>
+            <span class="text-[10px] bg-amber-500/10 text-amber-600 dark:text-amber-400 px-2 py-0.5 rounded-full font-bold">Abattement 50%</span>
+          </div>
+          <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+            L'État t'accorde un abattement automatique de 50 % sur tes loyers. Tu es imposé sur la moitié restante, peu importe tes dépenses réelles ou tes travaux.
+          </p>
+        </div>
+
+        <!-- Card Location Nue -->
+        <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800 space-y-1">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-xs text-rose-600 dark:text-rose-400 uppercase tracking-wide">Location Nue (Non meublée)</span>
+            <span class="text-[10px] bg-rose-500/10 text-rose-600 dark:text-rose-400 px-2 py-0.5 rounded-full font-bold">Abattement 30%</span>
+          </div>
+          <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+            Tu loues un logement vide (sans meuble). L'abattement forfaitaire n'est que de 30 %. C'est généralement le régime où tu paies le plus d'impôts dès la première année.
+          </p>
+        </div>
+      </div>
+
+      <!-- Concept 3 : La TMI -->
+      <div class="space-y-1.5 pt-1">
+        <h4 class="font-bold text-sm text-indigo-600 dark:text-indigo-400 flex items-center gap-2">
+          <i class="fa-solid fa-percent text-xs"></i> 3. C'est quoi la TMI ?
+        </h4>
+        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+          La <strong>Tranche Marginale d'Imposition (TMI)</strong> est le pourcentage d'impôt appliqué à la tranche la plus haute de tes revenus de travail (ex: 11%, 30%, 41%).<br>
+          Sur le bénéfice immobilier imposable, on applique ta **TMI + 17,2 %** de prélèvements sociaux (CSG/CRDS).
+        </p>
       </div>
     </div>
 
@@ -281,9 +358,9 @@
     let myChart = new Chart(ctx, {
       type: 'doughnut',
       data: {
-        labels: ['Crédit', 'Charges & Taxe', 'Impôts Est.', 'Cash-Flow Net'],
+        labels: ['Crédit', 'Charges & Taxe', 'Impôts Est.', 'Cash-Flow Net Net'],
         datasets: [{
-          data: [650, 118, 0, 0],
+          data: [600, 118, 0, 132],
           backgroundColor: ['#6366f1', '#f59e0b', '#ef4444', '#10b981'],
           borderWidth: 0
         }]
@@ -306,63 +383,62 @@
       const charges = parseFloat(chargesInput.value) || 0;
       const taxMonthly = (parseFloat(taxInput.value) || 0) / 12;
       const regime = fiscalSelect.value;
-      const tmi = parseFloat(tmiSelect.value) || 0.30;
-      const ps = 0.172; // Prélèvements sociaux
+      const tmi = parseFloat(tmiSelect.value) || 0;
+      const ps = 0.172; // Prélèvements sociaux (17.2%)
 
       const annualRent = rent * 12;
       const annualCharges = (charges * 12) + (parseFloat(taxInput.value) || 0);
 
       let impotMonthly = 0;
 
+      // Calcul classique de l'impôt selon le régime sélectionné
       if (regime === 'lmnp_micro') {
-        // Abattement 50%
-        const beneficeMicro = annualRent * 0.50;
-        impotMonthly = (beneficeMicro * (tmi + ps)) / 12;
-      } else if (regime === 'bareme') {
-        // Location nue (Micro-foncier abattement 30%)
-        const beneficeNue = annualRent * 0.70;
-        impotMonthly = (beneficeNue * (tmi + ps)) / 12;
-      } else if (regime === 'lmnp_real') {
-        // LMNP Réel : Amortissement du bien (85% valeur sur 30 ans) + amortissement travaux (sur 15 ans)
+        const beneficeImposable = annualRent * 0.50;
+        impotMonthly = (beneficeImposable * (tmi + ps)) / 12;
+      } 
+      else if (regime === 'bareme') {
+        const beneficeImposable = annualRent * 0.70;
+        impotMonthly = (beneficeImposable * (tmi + ps)) / 12;
+      } 
+      else if (regime === 'lmnp_real') {
+        // Amortissement immo (85% hors terrain sur 30 ans) + Amortissement travaux (sur 15 ans)
         const amortissementImmo = (price * 0.85) / 30;
         const amortissementWorks = works / 15;
         const totalAmortissement = amortissementImmo + amortissementWorks;
 
-        // Bénéfice imposable au réel = Loyers - (Charges déductibles + Amortissements)
         const beneficeImposable = annualRent - annualCharges - totalAmortissement;
 
         if (beneficeImposable > 0) {
-          // Uniquement si bénéfice net positif après amortissements
           impotMonthly = (beneficeImposable * (tmi + ps)) / 12;
         } else {
-          impotMonthly = 0; // Déficit ou amortissement neutralisant l'impôt
+          impotMonthly = 0; // Neutralisé par l'amortissement
         }
       }
 
       const totalOut = loan + charges + taxMonthly + impotMonthly;
-      const cashFlow = rent - totalOut;
+      const cashFlowNetNet = rent - totalOut;
 
-      // Renta
+      // Rendements
       const notaire = price * 0.08;
       const totalInvest = price + notaire + works;
       const rentaBrute = totalInvest > 0 ? ((rent * 12) / totalInvest) * 100 : 0;
       const rentaNette = totalInvest > 0 ? (((rent - charges - taxMonthly) * 12) / totalInvest) * 100 : 0;
 
-      // Display
+      // Affichage dynamique
       const cfEl = document.getElementById('cashFlowDisplay');
-      cfEl.textContent = (cashFlow >= 0 ? '+ ' : '') + Math.round(cashFlow) + ' € / mois';
-      cfEl.className = 'text-4xl font-black mt-1 ' + (cashFlow >= 0 ? 'text-emerald-500' : 'text-rose-500');
+      cfEl.textContent = (cashFlowNetNet >= 0 ? '+ ' : '') + Math.round(cashFlowNetNet) + ' € / mois';
+      cfEl.className = 'text-4xl font-black mt-1 ' + (cashFlowNetNet >= 0 ? 'text-emerald-500' : 'text-rose-500');
 
       document.getElementById('rentaBruteDisplay').textContent = rentaBrute.toFixed(1) + ' %';
       document.getElementById('rentaNetteDisplay').textContent = rentaNette.toFixed(1) + ' %';
       document.getElementById('impotDisplay').textContent = Math.round(impotMonthly) + ' €';
 
-      // Chart
+      // Mise à jour du graphique en anneau
       myChart.data.datasets[0].data = [
         Math.round(loan),
         Math.round(charges + taxMonthly),
         Math.round(impotMonthly),
-        Math.max(0, Math.round(cashFlow))
+        Math.max(0, Math.round(cashFlowNetNet))
       ];
       myChart.update();
     }
